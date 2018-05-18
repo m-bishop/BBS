@@ -1,0 +1,32 @@
+<header ng-switch on="$location.path().indexOf('/Users/new') > -1">
+    <h3 ng-switch-when="true">Create a new User</h3>
+    <h3 ng-switch-when="false">View or edit User</h3>
+</header>
+<form id="UserForm" name="UserForm" class="form-horizontal" role="form">
+    
+
+    <div class="form-group" ng-class="{'has-error': UserForm.avatar.$invalid}">
+        <label for="avatar" class="col-sm-2 control-label">Avatar</label>
+        <div id="avatarControls" class="col-sm-10">
+            <input id="avatar" name="avatar" type="text" class="form-control" ng-model="user.avatar" placeholder="Enter the User Avatar"></input>
+        </div>
+    </div>
+
+
+
+    <div class="form-group" ng-class="{'has-error': UserForm.handle.$invalid}">
+        <label for="handle" class="col-sm-2 control-label">Handle</label>
+        <div id="handleControls" class="col-sm-10">
+            <input id="handle" name="handle" type="text" class="form-control" ng-model="user.handle" placeholder="Enter the User Handle"></input>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button id="saveUser" name="saveUser" class="btn btn-primary" ng-disabled="isClean() || UserForm.$invalid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Save</button>
+            <button id="cancel" name="cancel" class="btn btn-default" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</button>
+            <button id="deleteUser" name="deleteUser" class="btn btn-danger" ng-show="user.userID" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+        </div>
+    </div>
+</form>

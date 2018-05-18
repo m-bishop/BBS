@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <title>Coredump Comic</title>
+</head>
+
+
+<body style="background-image: url(BACKGROUND5.GIF);">
+<div style="text-align: center;"><img style="width: 600px; height: 140px;" alt="" src="banner.jpg"><br></div>
+
+<div style="text-align: center;"><img style="width: 150px; height: 20px;" alt="" src="spacer.jpg"><a href="http://192.209.62.119/coredumpcomic/"><img style="border: 0px solid ; width: 50px; height: 20px;" alt="" src="news.jpg"></a><a href="http://192.209.62.119/coredumpcomic/comic/"><img style="border: 0px solid ; width: 50px; height: 20px;" alt="" src="comic.jpg"></a><a href="http://192.209.62.119/coredumpcomic/mud"><img style="border: 0px solid ; width: 50px; height: 20px;" alt="" src="mud.jpg"></a><a href="http://192.209.62.119/coredumpcomic/Forum/"><img style="border: 0px solid ; width: 50px; height: 20px;" alt="" src="forum.jpg"></a><a href="http://192.209.62.119/coredumpcomic/misc/"><img style="border: 0px solid ; width: 50px; height: 20px;" alt="" src="misc.jpg"></a><a href="http://192.209.62.119/coredumpcomic/faq.html"><img style="border: 0px solid ; width: 50px; height: 20px;" alt="" src="faq.jpg"></a><img style="width: 150px; height: 20px;" alt="" src="spacer.jpg"></div>
+
+<table style="background-color: rgb(0, 0, 0); width: 698px; height: 234px; text-align: left; margin-left: auto; margin-right: auto;" border="1" cellpadding="0" cellspacing="0">
+
+    <tbody>
+
+    <tr>
+
+        <td style="text-align: center; background-color: rgb(0, 0, 0);"><br>
+
+
+            <img style="" alt="" src="CD_symbol.jpg" ;="" name="current"><br>
+
+            <br>
+
+            <a href="javascript:backwardLink();"> <img style="width: 160px; height: 207px;" alt="prev" src="CD_symbol.jpg" name="prev"></a><a href="javascript:firstLink();"><img style="width: 160px; height: 207px;" alt="first" src="./media/comic1.gif" name="first"></a> <a href="javascript:lastLink();"><img style="width: 160px; height: 207px;" alt="last" src="./media/comic24.jpg" name="last"></a>&nbsp;<a href="javascript:forwardLink();"><img style="width: 160px; height: 207px;" alt="next" src="CD_symbol.jpg" name="next"><br>
+
+            </a>
+
+        </td>
+
+    </tr>
+
+
+    </tbody>
+</table>
+<table style="background-color: rgb(0, 0, 0); width: 698px; height: 50px; text-align: left; margin-left: auto; margin-right: auto;" border="1" cellpadding="0" cellspacing="0">
+    <tbody>
+    <div style="text-align: center;"><span style="color: rgb(51, 255, 51);"><span style="font-weight: bold;"><span style="color: rgb(51, 255, 51);">
+	  <tr style="text-align: center;color: rgb(51, 255, 51);">
+    <td >#PREV()</td>
+    <td>#FIRST()</td>
+    <td>#LAST()</td>
+	<td>#NEXT()</td>
+    </tr>
+</span></span></span></div>
+
+    </tbody>
+</table>
+<br>
+
+<br>
+
+<script type="text/javascript">
+    <!--
+    var maxComic = 43;
+    var currentComic;
+    var prevComic;
+    var nextComic;
+    var LastComic;
+    var forwardLocation;
+    var backwardLocation;
+    var firstLocation;
+    var lastLocation;
+    var path ="./media/comic";
+    initComics();
+    initLinks();
+    popComics();
+    function initComics(){
+        currentComic = window.location.search;
+        if (currentComic.substring(0, 1) != '?') {
+            currentComic = '?'+maxComic;
+        }
+        currentComic = currentComic.substring(1,currentComic.length);
+        currentComic = parseInt(currentComic);
+        prevComic = 1;
+        nextComic = maxComic;
+        if (currentComic > 1){
+            prevComic = currentComic - 1;
+        }
+//prevComic = "comic" + prevComic + ".jpg";
+        prevComic = path + prevComic + ".gif";
+        if (currentComic < maxComic){
+            nextComic = currentComic + 1;
+        }
+//nextComic = "comic" + nextComic + ".jpg";
+//currentComic = "comic" + currentComic + ".jpg";
+//lastComic = "comic" + maxComic + ".jpg";
+        nextComic = path + nextComic + ".gif";
+        currentComic = path + currentComic + ".gif";
+        lastComic = path + maxComic + ".gif";
+    }
+    function initLinks(){
+        forwardLocation = window.location.href;
+        backwardLocation = window.location.href;
+        var currentComic = window.location.search;
+        if (currentComic.substring(0, 1) != '?') {
+            currentComic = maxComic;
+        } else {
+            currentComic = currentComic.substring(1,currentComic.length);
+            currentComic = parseInt(currentComic);
+        }
+        var test = (forwardLocation.length - window.location.search.length);
+        forwardLocation = forwardLocation.substring(0,(test));
+        if (currentComic > 0){
+            backwardLocation = forwardLocation + "?" + (currentComic - 1);
+        } else{
+            backwardLocation = forwardLocation + "?" + (currentComic);
+        }
+//backwardLocation = forwardLocation + "?" + (currentComic - 1);
+//backwardLocation = forwardLocation + "?" + (prevComic);
+        firstLocation = forwardLocation +'?1';
+        lastLocation = forwardLocation+'?'+maxComic;
+        if (currentComic < maxComic){
+            forwardLocation = forwardLocation + "?" + (currentComic + 1);
+        } else{
+            forwardLocation = forwardLocation + "?" + (currentComic);
+        }
+//forwardLocation = forwardLocation + "?" + (currentComic + 1);
+//forwardLocation = forwardLocation + "?" + (nextComic);
+    }
+    function popComics(){
+        if (!document.images)
+            return;
+        document.images.current.src=(cComic());
+        document.images.next.src=(nComic());
+        document.images.prev.src=(pComic());
+        document.images.last.src=(lComic());
+    }
+    function cComic(){
+        return currentComic;
+    }
+    function pComic(){
+        return prevComic;
+    }
+    function nComic(){
+        return nextComic;
+    }
+    function lComic(){
+        return lastComic;
+    }
+    function forwardLink(){
+        window.location=forwardLocation;
+    }
+    function firstLink(){
+        window.location=firstLocation;
+    }
+    function lastLink(){
+        window.location=lastLocation;
+    }
+    function backwardLink(){
+        window.location=backwardLocation;
+    }
+    //-->
+</script>
+</body>
+</html>

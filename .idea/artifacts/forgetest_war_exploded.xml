@@ -1,0 +1,25 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="forgetest:war exploded">
+    <output-path>$PROJECT_DIR$/target/forgetest</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="forgetest" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.3.1" />
+          <element id="library" level="project" name="Maven: org.keycloak:keycloak-core:3.4.3.Final" />
+          <element id="library" level="project" name="Maven: org.keycloak:keycloak-common:3.4.3.Final" />
+          <element id="library" level="project" name="Maven: org.bouncycastle:bcprov-jdk15on:1.56" />
+          <element id="library" level="project" name="Maven: org.bouncycastle:bcpkix-jdk15on:1.56" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.9" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.9" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/forgetest/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="forgetest/web/Web" />
+    </root>
+  </artifact>
+</component>
