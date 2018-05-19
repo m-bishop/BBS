@@ -10,7 +10,8 @@ import org.keycloak.KeycloakSecurityContext;
 import javax.inject.Inject;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -18,6 +19,8 @@ import java.io.IOException;
  */
 @ServerEndpoint("/chat")
 public class Websocket {
+
+    private static final Logger LOGGER = Logger.getLogger(Websocket.class.getName());
 
     @Inject
     private World world;
@@ -35,18 +38,9 @@ public class Websocket {
             if (session.getUserPrincipal() instanceof KeycloakPrincipal) {
                 KeycloakPrincipal<KeycloakSecurityContext> kp = (KeycloakPrincipal<KeycloakSecurityContext>)  session.getUserPrincipal();
 
-                // this is how to get the real userName (or rather the login name)
+                //get the real userName (or rather the login name)
                 session.getBasicRemote().sendText( kp.getKeycloakSecurityContext().getIdToken().getPreferredUsername());
                 name = kp.getKeycloakSecurityContext().getIdToken().getPreferredUsername();
-                /*
-                Client client = ClientBuilder.newClient();
-                String response = client.target("http://127.0.0.1:8080/forgetest/rest/items")
-                        .request(MediaType.APPLICATION_JSON)
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + kp.getKeycloakSecurityContext().getTokenString())
-                        .get(String.class);
-
-                session.getBasicRemote().sendText(response);
-                */
                 User user = new User();
                 user.setSession(session);
                 user.setUserID(UserId);
@@ -72,40 +66,11 @@ public class Websocket {
     }
 
     @OnMessage
-    public void message(String message, Session client) throws IOException, EncodeException {
+    public void message(String message, Session client) {
         try {
-            System.out.println("message: " + message);
 
-            System.out.println("On Message userID:"+user.getUserID()+" Container:"+user.getContainer().getName());
-
-
+            LOGGER.log( Level.INFO, "message:" + message + " On Message userID:"+user.getUserID()+" Container:"+user.getContainer().getName());
             commandParser.parse(user,message);
-
-            /*
-            for (User u : world.getUsers()){
-                u.sendMessage(new Message("chat",message));
-            }
-            */
-
-            /*
-            String[] command = message.split(" ");
-
-            if (command[1].equalsIgnoreCase("claim")) {
-                world.claim(command[0]);
-                System.out.println(command[0] + " claimed");
-                for (Session peer : client.getOpenSessions()) {
-                    peer.getBasicRemote().sendText(world.getName());
-                }
-            }else if (command[1].equalsIgnoreCase("getname")) {
-                System.out.println(command[0] + " asked who owns this world!");
-                for (Session peer : client.getOpenSessions()) {
-                    peer.getBasicRemote().sendText(world.getName());
-                }
-            }
-            for (Session peer : client.getOpenSessions()) {
-                peer.getBasicRemote().sendText(message);
-            }
-            */
 
         }catch (Exception e){
             e.printStackTrace();

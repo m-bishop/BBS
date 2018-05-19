@@ -12,9 +12,13 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Stateless
 public class CommandParser {
+
+    private static final Logger LOGGER = Logger.getLogger(CommandParser.class.getName());
 
     @Inject
     private ChatCommand chatCommand;
@@ -33,7 +37,7 @@ public class CommandParser {
 
     @PostConstruct
     public void init(){
-        System.out.println(printCommand.toString());
+
         commandMap = new HashMap<>();
         commandMap.put("chat",chatCommand);
         commandMap.put("move",moveCommand);
@@ -49,7 +53,7 @@ public class CommandParser {
         room = user.getContainer();
 
         for (Action action : room.getActions()){
-            System.out.println("parsing:"+tokens[0]+" against:"+action.getCommand());
+            LOGGER.log( Level.INFO, "parsing:"+tokens[0]+" against:"+action.getCommand());
             if (action.getCommand().equals(tokens[0])){
                 executeScript(action.getScript());
             }
@@ -62,7 +66,7 @@ public class CommandParser {
             commandMap.get(script.split("\\s+")[0]).execute(user, command, script);
         }catch(Exception e){
             e.printStackTrace();
-            System.out.println("Command Not Found in Execute Script");
+            LOGGER.log( Level.INFO, "Command Not Found in Execute Script");
         }
     }
 }

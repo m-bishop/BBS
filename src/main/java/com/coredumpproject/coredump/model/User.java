@@ -10,10 +10,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Entity
 @XmlRootElement
 public class User implements Serializable {
+
+	private static final Logger LOGGER = Logger.getLogger(User.class.getName());
 
 	private static final long serialVersionUID = 1L;
 
@@ -49,7 +53,7 @@ public class User implements Serializable {
 			session.getBasicRemote().sendText(message.toJSON());
 		} else {
 			synchronized (this.messages) {
-				System.out.println("Adding message to user stored messages.");
+				LOGGER.log( Level.INFO, "Adding message to user stored messages.");
 				messages.add(message);
 			}
 		}

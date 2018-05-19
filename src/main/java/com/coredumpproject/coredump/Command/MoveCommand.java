@@ -7,9 +7,12 @@ import com.coredumpproject.coredump.model.User;
 import com.coredumpproject.coredump.rest.ItemEndpoint;
 
 import javax.inject.Inject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MoveCommand extends AbstractCommand {
 
+    private static final Logger LOGGER = Logger.getLogger(MoveCommand.class.getName());
 
     @Inject
     private ItemEndpoint itemEndpoint;
@@ -25,7 +28,7 @@ public class MoveCommand extends AbstractCommand {
             user.setContainer(destination);
             commandParser.parse(user,".entryrc");
         } catch (NotFoundException e) {
-            System.out.println("Destination room in move command not found.");
+            LOGGER.log( Level.WARNING, "Destination room in move command not found!");
         }
 
     }

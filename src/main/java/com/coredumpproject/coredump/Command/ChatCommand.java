@@ -6,8 +6,12 @@ import com.coredumpproject.coredump.model.User;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ChatCommand extends AbstractCommand {
+
+    private static final Logger LOGGER = Logger.getLogger(ChatCommand.class.getName());
 
     @Inject
     World world;
@@ -19,7 +23,7 @@ public class ChatCommand extends AbstractCommand {
                 try {
                     u.sendMessage(new Message("chat", user.getAvatar().getName()+">"+command.substring(5)));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.log( Level.WARNING, "Message send failed in Chat command",e);
                 }
             }
         }

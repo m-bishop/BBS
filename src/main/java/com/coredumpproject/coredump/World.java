@@ -2,7 +2,6 @@ package com.coredumpproject.coredump;
 
 import com.coredumpproject.coredump.EJB.UserPersistantEJB;
 import com.coredumpproject.coredump.Exception.NotFoundException;
-import com.coredumpproject.coredump.model.Action;
 import com.coredumpproject.coredump.model.Item;
 import com.coredumpproject.coredump.model.User;
 import com.coredumpproject.coredump.rest.ItemEndpoint;
@@ -16,6 +15,8 @@ import javax.inject.Inject;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Gregory on 5/26/2017.
@@ -23,6 +24,8 @@ import java.util.Set;
 @Singleton
 @TransactionManagement(value= TransactionManagementType.BEAN)
 public class World {
+
+    private static final Logger LOGGER = Logger.getLogger(World.class.getName());
 
     @Inject
     private UserPersistantEJB userBean;
@@ -43,7 +46,7 @@ public class World {
 
     @PostConstruct
     public void init() {
-        System.out.println("Creating The World.");
+        LOGGER.log( Level.INFO, "Building World");
     }
 
     @Schedule(second="*/30", minute="*",hour="*", persistent=false)
@@ -54,15 +57,8 @@ public class World {
                     u.sendMessage(new Message("system", "1/2 minute tick"));
                 }
             }
-            /*
-            if (!this.users.isEmpty()) {
-                for (Session session : this.users.iterator().next().getSession().getOpenSessions()) {
-                    session.getBasicRemote().sendText("1/2 minute tick");
-                }
-            }
-            */
         } catch (Exception ex){
-            System.out.println(ex.getLocalizedMessage());
+            LOGGER.log( Level.INFO, ex.getLocalizedMessage());
         }
     }
 
@@ -98,8 +94,6 @@ public class World {
     }
 
     public  User addUser(User user){
-        System.out.println("In addUser");
-
         User entity;
         synchronized(users) {
             try {
@@ -107,7 +101,7 @@ public class World {
                 entity.setSession(user.getSession());
                 if (entity.getAvatar() == null){
                     entity.setAvatar(user.getAvatar());
-                    System.out.println("Created new Avatar for a loaded user."); // log as warning
+                    LOGGER.log( Level.WARNING, "Created new Avatar for a loaded user!");
                 }
                 this.users.add(entity);
             } catch (NotFoundException nfe) {
@@ -120,8 +114,6 @@ public class World {
       }
 
     public void removeUser(User user){
-        System.out.println("In removeUser");
-
         userBean.saveUser(user);
         synchronized (users) {
             this.users.remove(user);
@@ -132,13 +124,10 @@ public class World {
         try {
             user.getSession().getBasicRemote().sendText("Loaded User ...");
             Item lobby = itemEndpoint.getById(1L); // First room must be the first thing created!
-            for (Action action : lobby.getActions()){ // TODO debug line, remove when done.
-                System.out.println("lobby action:"+action.getCommand());
-            }
             user.setContainer(lobby);
             user.sendMessage(new Message("user","User has entered:"+user.getContainer().getName()));
         } catch (Exception e) {
-            System.out.println("Error communicating to newly loaded user in addUser.");
+            LOGGER.log( Level.WARNING, "Error communicating to newly loaded user in addUser!");
         }
     }
 
